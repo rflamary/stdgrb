@@ -98,17 +98,42 @@ def qp_solve_0(np.ndarray[double, ndim=2, mode="c"] Q,np.ndarray[double, ndim=1]
 
 
 def lp_solve(c,A=None,b=None,lb=None,ub=None):
-    """ solve stanard linear program
-    lp_solve(c,A=None,b=None,lb=None,ub=None)
+    """ Solves a standard linear program
     
-    solve the following optimization problem:
+    Solve the following optimization problem:
         
-        min_x  x'c
+    .. math::
+        \min_x x^Tc
         
-        s. t.  lb <= x <= up
-                 Ax <= b
+        s.t. 
+        
+        lb <= x <= ub
+        
+        Ax <= b
+        
+    
+    Uses the gurobi solver.
+    
+    Parameters
+    ----------
+    c : (d,) ndarray, float64
+        Linear cost vector
+    A : (n,d) ndarray, float64, optional
+        Linear constraint matrix 
+    b : (n,) ndarray, float64, optional
+        Linear constraint vector
+    lb : (d) ndarray, float64, optional
+        Lower bound constraint        
+    ub : (d) ndarray, float64, optional
+        Upper bound constraint            
                  
-    returns sol,val that are the solution of the optimization problem and the value (val is None if an error occured)
+    Returns
+    -------
+    x: (d,) ndarray
+        Optimal solution x
+    val: float
+        optimal value of the objective (None if optimization error)
+    
     
     """
     
@@ -136,6 +161,46 @@ def lp_solve(c,A=None,b=None,lb=None,ub=None):
 
 
 def qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None):
+    """ Solves a standard quadratic program
+    
+    Solve the following optimization problem:
+        
+    .. math::
+        \min_x  x^TQx+x^Tc
+        
+        s.t. 
+        
+        lb <= x <= ub
+        
+        Ax <= b
+        
+    
+    Uses the gurobi solver.
+    
+    Parameters
+    ----------
+    Q : (d,d) ndarray, float64, optional
+        Quadratic cost matrix matrix     
+    c : (d,) ndarray, float64
+        Linear cost vector
+    A : (n,d) ndarray, float64, optional
+        Linear constraint matrix 
+    b : (n,) ndarray, float64, optional
+        Linear constraint vector
+    lb : (d) ndarray, float64, optional
+        Lower bound constraint        
+    ub : (d) ndarray, float64, optional
+        Upper bound constraint            
+                 
+    Returns
+    -------
+    x: (d,) ndarray
+        Optimal solution x
+    val: float
+        optimal value of the objective (None if optimization error)
+    
+    
+    """    
     """ solve standard quadratic  program
     qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None)
     

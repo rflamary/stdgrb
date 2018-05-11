@@ -1,8 +1,9 @@
 # stdgrb: Python Gurobi solvers for standard dense problems 
 
 This is a fast cython wrapper for strandard dense optimization that calls 
-gurobi through its C interface. It is more efficient that the gurobi python 
-interface that cannot accept directly numpy arreyx for constraints.
+gurobi through its C interface. It is more efficient for dense problems 
+than the gurobi python 
+interface that cannot accept directly numpy arrays for constraints.
 
 ## Install
 
@@ -45,4 +46,6 @@ Supposing that the matrices A,b,, lb and ub are alerday defined, you can solve
  
  if A,b,ul,ub and not given or None, the corresponding constraints are not 
  used.
-
+ 
+ 
+ 
