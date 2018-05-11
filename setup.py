@@ -1,8 +1,8 @@
-"""A setuptools based setup module.
-See:
-https://packaging.python.org/en/latest/distributing.html
-https://github.com/pypa/sampleproject
+# -*- coding: utf-8 -*-
 """
+"""
+
+
 
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
@@ -11,17 +11,37 @@ from codecs import open
 from os import path
 from setuptools.extension import Extension
 from Cython.Build import cythonize
+import re
+import os
+import numpy
 
 here = path.abspath(path.dirname(__file__))
 # dirty but working
 __version__ = re.search(
     r'__version__\s*=\s*[\'"]([^\'"]*)[\'"]',  # It excludes inline comment too
-    open('ot/__init__.py').read()).group(1)
+    open('stdgrb/__init__.py').read()).group(1)
 # The beautiful part is, I don't even need to check exceptions here.
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
+    
+    
+if 'GUROBI_HOME' in os.environ and 'GUROBI_VERSION' in os.environ:
+    GUROBI_HOME=os.environ['GUROBI_HOME']
+    GUROBI_VERSION=os.environ['GUROBI_VERSION']
+else:
+    raise(RuntimeError('GUROBI_HOME and GUROBI_VERSION environement variables \
+have to be defined for instance: \nGUROBI_HOME=path/to/\
+gurobi/linux64\nGUROBI_VERSION=gurobi75'))
+    
+
+extensions = [
+    Extension("stdgrb/stdgurobi", ["stdgrb/stdgurobi.pyx"],
+        include_dirs = [numpy.get_include(),path.join(GUROBI_HOME,'include')],
+        libraries = ['m',GUROBI_VERSION],
+        library_dirs = [path.join(GUROBI_HOME,'lib')])]
+
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
 # Fields marked as "Optional" may be commented out.
@@ -83,7 +103,7 @@ setup(
 
     # This should be your name or the name of the organization which owns the
     # project.
-    author='Rémi Flamary',  # Optional
+    author=u'Rémi Flamary',  # Optional
 
     # This should be a valid email address corresponding to the author listed
     # above.
@@ -132,6 +152,8 @@ setup(
     #   py_modules=["my_module"],
     #
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
+    
+    ext_modules = cythonize(extensions),
 
     # This field lists other packages that your project depends on to run.
     # Any package you put here will be installed by pip when your project is

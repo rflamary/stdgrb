@@ -47,15 +47,17 @@ def lp_solve_0(np.ndarray[double, ndim=1] c,
     cdef int  rows = A.shape[0]
     cdef int  cols = A.shape[1]
     
-    cdef double val
+    cdef double val0
     cdef np.ndarray[double, ndim=1] sol=np.zeros_like(c)
 
     solved=solve_problem(rows, cols,   <double*>  c.data,NULL, <double*>  A.data,
                          <double*>  b.data, <double*>  lb.data,
-                         <double*>  ub.data,<double*>  sol.data, &val)
+                         <double*>  ub.data,<double*>  sol.data, &val0)
     
     if not solved:
         val=None
+    else:
+        val=val0
     
     return sol,val
 
@@ -80,15 +82,17 @@ def qp_solve_0(np.ndarray[double, ndim=2, mode="c"] Q,np.ndarray[double, ndim=1]
     cdef int  rows = A.shape[0]
     cdef int  cols = A.shape[1]
     
-    cdef double val
+    cdef double val0
     cdef np.ndarray[double, ndim=1] sol=np.zeros_like(c)
 
     solved=solve_problem(rows, cols,   <double*>  c.data,<double*>  Q.data, <double*>  A.data,
                          <double*>  b.data, <double*>  lb.data,
-                         <double*>  ub.data,<double*>  sol.data, &val)
+                         <double*>  ub.data,<double*>  sol.data, &val0)
     
     if not solved:
         val=None
+    else:
+        val=val0
     
     return sol,val
 

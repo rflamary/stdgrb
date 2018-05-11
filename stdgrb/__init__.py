@@ -3,7 +3,9 @@
 
 __version__="0.1.0"
 
+from .stdgurobi import lp_solve,qp_solve
 
 
-__all__ = []
+
+__all__ = ['lp_solve','qp_solve']
 
