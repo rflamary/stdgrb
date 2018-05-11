@@ -201,19 +201,6 @@ def qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None):
     
     
     """    
-    """ solve standard quadratic  program
-    qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None)
-    
-    solve the following optimization problem:
-        
-        min_x  x'Qx + x'c
-        
-        s. t.  lb <= x <= up
-                 Ax <= b
-                 
-    returns sol,val that are the solution of the optimization problem and the value (val is None if an error occured)
-    
-    """
     
     n=Q.shape[0]
     
