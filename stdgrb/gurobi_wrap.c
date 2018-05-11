@@ -13,105 +13,10 @@
   optimal solution vector in 'solution'.
 */
 
+
+
 static int
 dense_optimize(GRBenv *env,
-               int     rows,
-               int     cols,
-               double *c,     /* linear portion of objective function */
-               double *Q,     /* quadratic portion of objective function */
-               double *A,     /* constraint matrix */
-               char   *sense, /* constraint senses */
-               double *rhs,   /* RHS vector */
-               double *lb,    /* variable lower bounds */
-               double *ub,    /* variable upper bounds */
-               char   *vtype, /* variable types (continuous, binary, etc.) */
-               double *solution,
-               double *objvalP)
-{
-  GRBmodel *model = NULL;
-  int       i, j, optimstatus;
-  int       error = 0;
-  int       success = 0;
-
-  /* Create an empty model */
-
-  error = GRBnewmodel(env, &model, "dense", cols, c, lb, ub, vtype, NULL);
-  if (error) goto QUIT;
-  
-  
-
-  error = GRBaddconstrs(model, rows, 0, NULL, NULL, NULL, sense, rhs, NULL);
-  if (error) goto QUIT;
-
-  /* Populate A matrix */
-
-  for (i = 0; i < rows; i++) {
-    for (j = 0; j < cols; j++) {
-      if (A[i*cols+j] != 0) {
-        error = GRBchgcoeffs(model, 1, &i, &j, &A[i*cols+j]);
-        if (error) goto QUIT;
-      }
-    }
-  }
-
-  /* Populate Q matrix */
-
-  if (Q) {
-    for (i = 0; i < cols; i++) {
-      for (j = 0; j < cols; j++) {
-        if (Q[i*cols+j] != 0) {
-          error = GRBaddqpterms(model, 1, &i, &j, &Q[i*cols+j]);
-          if (error) goto QUIT;
-        }
-      }
-    }
-  }
-
-  /* Optimize model */
-
-  error = GRBoptimize(model);
-  if (error) goto QUIT;
-
-  /* Write model to 'dense.lp' */
-
-  //error = GRBwrite(model, "dense.lp");
-  //if (error) goto QUIT;
-
-  /* Capture solution information */
-
-  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &optimstatus);
-  if (error) goto QUIT;
-
-  if (optimstatus == GRB_OPTIMAL) {
-
-    error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, objvalP);
-    if (error) goto QUIT;
-
-    error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, cols, solution);
-    if (error) goto QUIT;
-
-    success = 1;
-  }
-
-QUIT:
-
-  /* Error reporting */
-
-  if (error) {
-    printf("ERROR: %s\n", GRBgeterrormsg(env));
-    exit(1);
-  }
-
-  /* Free model */
-
-  GRBfreemodel(model);
-
-  return success;
-}
-
-
-static int
-dense_optimize2(GRBenv *env,
                int     rows,
                int     cols,
                double *c,     /* linear portion of objective function */
@@ -158,6 +63,9 @@ dense_optimize2(GRBenv *env,
     error = GRBaddconstr(model, i0, cind, vals, sense[i], rhs[i], NULL);
     if (error) goto QUIT;
   }
+  
+  free(cind);
+  free(vals);
 
   /* Populate Q matrix */
 
@@ -243,13 +151,14 @@ int solved =0;
 
   /* Solve the model */
 
-  solved = dense_optimize2(env, rows, cols, c, Q, A, sense, b, lb,
+  solved = dense_optimize(env, rows, cols, c, Q, A, sense, b, lb,
                           ub, NULL, sol, objval);
 
 //  if (solved)
 //    printf("Solved: x=%.4f, y=%.4f, z=%.4f\n", sol[0], sol[1], sol[2]);
 
   QUIT:
+  free(sense);
 
   /* Free environment */
 
