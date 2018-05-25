@@ -8,14 +8,25 @@ Created on Fri May 11 10:08:27 2018
 
 import numpy as np
 import pylab as pl
-
+import scipy
 
 import stdgrb
+import time
+
+t_start=time.clock()
+
+def tic():
+    t_start=time.clock()
+
+def toc():
+    t=time.clock()-t_start
+    print('Elapsed time: {:1.3f}s'.format(t))
+    return t
 
 #%%
 
-n=10000
-d=1000
+n=1000
+d=100
 
 np.random.seed(0)
 
@@ -29,6 +40,10 @@ ub=np.ones(d)
 
 #%%
 
-
+tic()
 x=stdgrb.lp_solve(c,A,b,lb,ub)
+toc()
+
+
+#%%
 

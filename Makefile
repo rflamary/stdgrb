@@ -1,5 +1,6 @@
 # Makefile for creating our standalone Cython program
 PYTHON := python3
+GUROBI_VERSION := gurobi75
 CYTHON := cython --force -a
 
 GCCOPT := -shared -pthread -fPIC -fwrapv -O3 -Wall -ffast-math -fno-strict-aliasing 
@@ -23,7 +24,7 @@ SYSLIBS :=  $(shell $(PYTHON) -c "import distutils.sysconfig; print(distutils.sy
 
    
 %.so: %.c 
-	$(CC) $(GCCOPT) $^ -o $@  -I$(INCDIR)  -I$(INCDIR2) -I${GUROBI_HOME}/include/ -L${GUROBI_HOME}/lib/ -lgurobi75 -lm
+	$(CC) $(GCCOPT) $^ -o $@  -I$(INCDIR)  -I$(INCDIR2) -I${GUROBI_HOME}/include/ -L${GUROBI_HOME}/lib/ -l$(GUROBI_VERSION) -lm
 %.c: %.pyx 
 	$(CYTHON) $^ -I$(INCDIR)  -I$(INCDIR2) 
 
