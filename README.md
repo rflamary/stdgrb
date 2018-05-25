@@ -24,7 +24,8 @@ export GUROBI_VERSION=gurobi75 # for gurobi 7.5
 ``` 
 
 you can find the gurobi version in the ```GUROBI_HOME/lib``` folder by seeking 
-the ```gurobi[XX].so```.
+the ```libgurobi[XX].so``` and setting ```GUROBI_VERSION=gurobi[XX]``` 
+(be carefull to remove the 'lib').
 
 When the environement variables are set, you can install the module with
 
