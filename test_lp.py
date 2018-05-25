@@ -42,18 +42,18 @@ ub=np.ones(d)
 
 print('Default method')
 tic()
-x=stdgrb.lp_solve(c,A,b,lb,ub)
+x=stdgrb.lp_solve(c,A,b,lb,ub,logtoconsole=0)
 toc()
 
 
 print('Simplex method')
 tic()
-x=stdgrb.lp_solve(c,A,b,lb,ub,1)
+x=stdgrb.lp_solve(c,A,b,lb,ub,1,logtoconsole=0)
 toc()
 
 print('Interior point method')
 tic()
-x=stdgrb.lp_solve(c,A,b,lb,ub,2)
+x=stdgrb.lp_solve(c,A,b,lb,ub,2,logtoconsole=0)
 toc()
 #%%
 

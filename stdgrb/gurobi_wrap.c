@@ -29,7 +29,8 @@ dense_optimize(GRBenv *env,
                char   *vtype, /* variable types (continuous, binary, etc.) */
                double *solution,
                double *objvalP,
-               int method)
+               int method,
+               int logtoconsole)
 {
   GRBmodel *model = NULL;
   int       i, j, optimstatus;
@@ -85,6 +86,8 @@ dense_optimize(GRBenv *env,
   
     error = GRBsetintparam(GRBgetenv(model), "Method", method);
     if (error) goto QUIT;
+    error = GRBsetintparam(GRBgetenv(model), "LogToConsole", logtoconsole);
+    if (error) goto QUIT;
   /* Optimize model */
 
   error = GRBoptimize(model);
@@ -139,7 +142,8 @@ static int solve_problem(
                double *ub,    /* variable upper bounds */
                double *sol,
                double *objval,
-               int method)
+               int method,
+               int logtoconsole)
 {
 
 // contrainte
@@ -158,7 +162,7 @@ int solved =0;
   /* Solve the model */
 
   solved = dense_optimize(env, rows, cols, c, Q, A, sense, b, lb,
-                          ub, NULL, sol, objval,method);
+                          ub, NULL, sol, objval,method,logtoconsole);
 
 //  if (solved)
 //    printf("Solved: x=%.4f, y=%.4f, z=%.4f\n", sol[0], sol[1], sol[2]);
