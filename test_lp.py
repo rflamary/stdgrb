@@ -40,10 +40,20 @@ ub=np.ones(d)
 
 #%%
 
+print('Default method')
 tic()
 x=stdgrb.lp_solve(c,A,b,lb,ub)
 toc()
 
 
+print('Simplex method')
+tic()
+x=stdgrb.lp_solve(c,A,b,lb,ub,1)
+toc()
+
+print('Interior point method')
+tic()
+x=stdgrb.lp_solve(c,A,b,lb,ub,2)
+toc()
 #%%
 
