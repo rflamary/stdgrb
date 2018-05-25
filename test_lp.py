@@ -53,7 +53,7 @@ toc()
 
 print('Interior point method')
 tic()
-x=stdgrb.lp_solve(c,A,b,lb,ub,2,logtoconsole=0)
+x=stdgrb.lp_solve(c,A,b,lb,ub,2,logtoconsole=0,crossover=0)
 toc()
 #%%
 
