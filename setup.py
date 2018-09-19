@@ -37,9 +37,10 @@ gurobi/linux64\nGUROBI_VERSION=gurobi75'))
     
 
 extensions = [
-    Extension("stdgrb/stdgurobi", ["stdgrb/stdgurobi.pyx"],
+    Extension("stdgrb.stdgurobi", ["stdgrb/stdgurobi.pyx"],
         include_dirs = [numpy.get_include(),path.join(GUROBI_HOME,'include')],
         libraries = ['m',GUROBI_VERSION],
+        extra_compile_args=["-std=c99"],
         library_dirs = [path.join(GUROBI_HOME,'lib')])]
 
 
