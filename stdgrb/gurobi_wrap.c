@@ -173,6 +173,12 @@ int solved =0;
 //    printf("Solved: x=%.4f, y=%.4f, z=%.4f\n", sol[0], sol[1], sol[2]);
 
   QUIT:
+  
+  if (error) {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+  
   free(sense);
 
   /* Free environment */
