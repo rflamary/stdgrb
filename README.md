@@ -36,7 +36,7 @@ python setup.py install # --user if local install
 ## Use the module
 
 
-Supposing that the matrices A,b,, lb and ub are alerday defined, you can solve
+Supposing that the matrices A, b, lb and ub are alerday defined, you can solve
  the linear program with
  
  
