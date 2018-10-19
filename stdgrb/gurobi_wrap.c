@@ -145,6 +145,7 @@ static int solve_problem(
                double *ub,    /* variable upper bounds */
                double *sol,
                double *objval,
+               int nbeq,
                int method,
                int logtoconsole,
                int crossover)
@@ -152,7 +153,8 @@ static int solve_problem(
 
 // contrainte
 char   *sense =malloc(sizeof(char)*rows);
-for (int i=0;i<rows;i++) sense[i]='<';
+for (int i=0;i<rows;i++) { if (i<nbeq) sense[i]='='; else sense[i]='<'; } //
+
 
 GRBenv *env     = NULL;
 int     error   = 0;
