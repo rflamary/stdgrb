@@ -74,7 +74,7 @@ Returns:
     Optimal value of the objective (None if optimization error)
 
 
-### Linear program `qp_solve`
+### Quadratic program `qp_solve`
 
 ```python
 qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, crossover=-1)
