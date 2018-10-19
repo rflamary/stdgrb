@@ -1,4 +1,4 @@
-# stdgrb: Python Gurobi solvers for standard dense problems 
+# stdgrb: Python Gurobi solvers for standard problems 
 
 This is a fast cython wrapper for strandard dense optimization that calls 
 gurobi through its C interface. It is more efficient for dense problems 
