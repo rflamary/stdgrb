@@ -18,29 +18,31 @@ Solves the following optimization problem:
 ![LP](imgs/lp.png)
 
 Parameters:
-* c : (d,) ndarray, float64
+* c : (d,) ndarray, float64,
     Linear cost vector
-* A : (n,d) ndarray, float64, optional
+* A : (n,d) ndarray, float64, optional,
     Linear constraint matrix
-* b : (n,) ndarray, float64, optional
+* b : (n,) ndarray, float64, optional,
     Linear constraint vector
-lb : (d) ndarray, float64, optional
-Lower bound constraint
-ub : (d) ndarray, float64, optional
-Upper bound constraint
-method : int, optional
-Selected solver from * -1=automatic (default), * 0=primal simplex, * 1=dual simplex, * 2=barrier, * 3=concurrent, * 4=deterministic concurrent, * 5=deterministic concurrent simplex
-logtoconsole : int, optional
-If 1 the print log in console,
-crossover : int, optional
-Select crossover strategy for interior point (see gurobi documentation)
+* lb : (d) ndarray, float64, optional,
+    Lower bound constraint
+* ub : (d) ndarray, float64, optional,
+    Upper bound constraint
+* nbeq: int, optional,
+    Treat the nbeq first lines of A as equality constraints.    
+* method : int, optional,
+    Selected solver from * -1=automatic (default), * 0=primal simplex, * 1=dual simplex, * 2=barrier, * 3=concurrent, * 4=deterministic concurrent, * 5=deterministic concurrent simplex
+* logtoconsole : int, optional,
+    If 1 the print log in console,
+* crossover : int, optional,
+    Select crossover strategy for interior point (see gurobi documentation)
 
 
 Returns:
-x: (d,) ndarray
-Optimal solution x
-val: float
-optimal value of the objective (None if optimization error)
+* x: (d,) ndarray,
+    Optimal solution x
+* val: float,
+    Optimal value of the objective (None if optimization error)
 
 
 ## Install
