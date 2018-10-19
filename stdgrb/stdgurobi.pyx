@@ -119,6 +119,8 @@ def lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, c
         
         Ax <= b
         
+    You can also set equalitu constraint with parameter nbeq that define the 
+    first nnbeq lines of A and b as esuality constraints.
     
     Uses the gurobi solver.
     
@@ -133,7 +135,9 @@ def lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, c
     lb : (d) ndarray, float64, optional
         Lower bound constraint        
     ub : (d) ndarray, float64, optional
-        Upper bound constraint      
+        Upper bound constraint     
+    nbeq: int, optional
+        Treat the nbeq first lines of A as equality constraints.
     method : int, optional
         Selected solver from  
         * -1=automatic (default), 
@@ -194,10 +198,11 @@ def qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None, nbeq=0, method=-1,logtocons
         lb <= x <= ub
         
         Ax <= b
-        
+
+    You can also set equalitu constraint with parameter nbeq that define the 
+    first nbeq lines of A and b as equality constraints.        
     
-    Uses the gurobi solver.
-    
+
     Parameters
     ----------
     Q : (d,d) ndarray, float64, optional
@@ -211,7 +216,9 @@ def qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None, nbeq=0, method=-1,logtocons
     lb : (d) ndarray, float64, optional
         Lower bound constraint        
     ub : (d) ndarray, float64, optional
-        Upper bound constraint            
+        Upper bound constraint    
+    nbeq: int, optional
+        Treat the nbeq first lines of A as equality constraints.        
     method : int, optional
         Selected solver from  
         * -1=automatic (default), 
