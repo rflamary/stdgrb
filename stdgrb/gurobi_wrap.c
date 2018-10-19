@@ -40,30 +40,35 @@ dense_optimize(GRBenv *env,
   if (error)
     goto QUIT;
 
-  int *cind = malloc(sizeof(int) * cols);
+
+
+
+  /* Populate A matrix */
+  int *i_ind = malloc(sizeof(int) * cols);
+  int *j_ind = malloc(sizeof(int) * cols);
   double *vals = malloc(sizeof(double) * cols);
   int i0 = 0;
-  /* Populate A matrix */
 
   for (i = 0; i < rows; i++)
   {
+    // seeks non zero values
     i0 = 0;
     for (j = 0; j < cols; j++)
     {
       if (A[i * cols + j] != 0)
       {
-        cind[i0] = j;
+        j_ind[i0] = j;
         vals[i0] = A[i * cols + j];
         i0 += 1;
       }
     }
-    error = GRBaddconstr(model, i0, cind, vals, sense[i], rhs[i], NULL);
+    // add constraint for line i
+    error = GRBaddconstr(model, i0, j_ind, vals, sense[i], rhs[i], NULL);
     if (error)
       goto QUIT;
   }
 
-  free(cind);
-  free(vals);
+
 
   /* Populate Q matrix */
 
@@ -71,17 +76,27 @@ dense_optimize(GRBenv *env,
   {
     for (i = 0; i < cols; i++)
     {
-      for (j = 0; j < cols; j++)
+    // seeks non zero values
+    i0 = 0;
+    for (j = 0; j < cols; j++)
+    {
+      if (Q[i * cols + j] != 0)
       {
-        if (Q[i * cols + j] != 0)
-        {
-          error = GRBaddqpterms(model, 1, &i, &j, &Q[i * cols + j]);
-          if (error)
-            goto QUIT;
-        }
+        j_ind[i0] = j;
+        i_ind[i0] = i;
+        vals[i0] = Q[i * cols + j];
+        i0 += 1;
       }
     }
+    error = GRBaddqpterms(model, i0, i_ind, j_ind, vals);
+    if (error)
+      goto QUIT;
+    }
   }
+
+  free(i_ind);
+  free(j_ind);
+  free(vals);
 
   /* set parameters */
 
