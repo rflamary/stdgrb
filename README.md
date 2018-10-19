@@ -112,4 +112,4 @@ Returns:
     Optimal solution x
 * val: float,
     Optimal value of the objective (None if optimization error)
- 
+
