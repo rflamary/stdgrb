@@ -145,6 +145,7 @@ static int solve_problem(
                double *ub,    /* variable upper bounds */
                double *sol,
                double *objval,
+               int nbeq,
                int method,
                int logtoconsole,
                int crossover)
