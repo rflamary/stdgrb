@@ -36,18 +36,12 @@ dense_optimize(GRBenv *env,
   int success = 0;
 
   /* Create an empty model */
-
   error = GRBnewmodel(env, &model, "dense", cols, c, lb, ub, vtype, NULL);
-  if (error)
-    goto QUIT;
-
-  //error = GRBaddconstrs(model, rows, 0, NULL, NULL, NULL, sense, rhs, NULL);
   if (error)
     goto QUIT;
 
   int *cind = malloc(sizeof(int) * cols);
   double *vals = malloc(sizeof(double) * cols);
-  //for (i = 0; i < cols; i++) cind[i]=i;
   int i0 = 0;
   /* Populate A matrix */
 
@@ -149,8 +143,8 @@ QUIT:
 }
 
 static int solve_problem(
-    int rows,
-    int cols,
+    int rows,    /* nb rows in A */
+    int cols,    /* nb cols in A, also size of the problame */
     double *c,  /* linear portion of objective function */
     double *Q,  /* quadratic portion of objective function */
     double *A,  /* constraint matrix */
@@ -165,7 +159,7 @@ static int solve_problem(
     int crossover)
 {
 
-  // contrainte
+  // define constraint type
   char *sense = malloc(sizeof(char) * rows);
   for (int i = 0; i < rows; i++)
   {

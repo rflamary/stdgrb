@@ -1,5 +1,6 @@
 # Makefile for creating our standalone Cython program
 PYTHON := python3
+branch := $(shell git symbolic-ref --short -q HEAD)
 GUROBI_VERSION := gurobi75
 CYTHON := cython --force -a
 
@@ -29,7 +30,9 @@ SYSLIBS :=  $(shell $(PYTHON) -c "import distutils.sysconfig; print(distutils.sy
 	$(CYTHON) $^ -I$(INCDIR)  -I$(INCDIR2) 
 
 
-all: stdgrb/stdgurobi.so
+all: FORCE stdgrb/stdgurobi.so
+
+new: FORCE clean stdgrb/stdgurobi.so
 
 clean:
 	@echo cleaning compilation output
@@ -38,7 +41,26 @@ clean:
 test: clean all
 	LD_LIBRARY_PATH=$(LIBDIR1):$$LD_LIBRARY_PATH ./embedded > test.output
 	$(PYTHON) assert_equal.py embedded.output test.output
-	
+
+buildext :
+	$(PYTHON) setup.py build_ext --inplace
+
+install :
+	$(PYTHON) setup.py install --user
+
+sinstall :
+	sudo $(PYTHON) setup.py install
+
+remove :
+	$(PYTHON) setup.py install --user --record files.txt
+	tr '\n' '\0' < files.txt | xargs -0 rm -f --
+	rm files.txt
+
+sremove :
+	$(PYTHON) setup.py install  --record files.txt
+	tr '\n' '\0' < files.txt | sudo xargs -0 rm -f --
+	rm files.txt
+
 
 
 FORCE:
