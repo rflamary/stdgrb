@@ -36,9 +36,6 @@ python setup.py install # --user if local install
 
 ## Use the module
 
-
-## Use the module
-
 ### Linear program `lp_solve`
 
 ```python
