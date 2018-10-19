@@ -45,6 +45,47 @@ Returns:
     Optimal value of the objective (None if optimization error)
 
 
+### Linear program `qp_solve`
+
+```python
+qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, crossover=-1)
+```
+
+Solves the following optimization problem:
+
+![QP](imgs/qp.png)
+
+Parameters:
+* Q : (d,d) ndarray, float64, optional
+    Quadratic cost matrix matrix
+* c : (d,) ndarray, float64, optional,
+    Linear cost vector
+* A : (n,d) ndarray, float64, optional,
+    Linear constraint matrix
+* b : (n,) ndarray, float64, optional,
+    Linear constraint vector
+* lb : (d) ndarray, float64, optional,
+    Lower bound constraint
+* ub : (d) ndarray, float64, optional,
+    Upper bound constraint
+* nbeq: int, optional,
+    Treat the nbeq first lines of A as equality constraints.    
+* method : int, optional,
+    Selected solver from * -1=automatic (default), * 0=primal simplex, * 1=dual simplex, * 2=barrier, * 3=concurrent, * 4=deterministic concurrent, * 5=deterministic concurrent simplex
+* logtoconsole : int, optional,
+    If 1 the print log in console,
+* crossover : int, optional,
+    Select crossover strategy for interior point (see gurobi documentation)
+
+
+Returns:
+* x: (d,) ndarray,
+    Optimal solution x
+* val: float,
+    Optimal value of the objective (None if optimization error)
+
+
+
 ## Install
 
 The only strong dependencies are
