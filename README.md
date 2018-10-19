@@ -36,7 +36,7 @@ python setup.py install # --user if local install
 ## Use the module
 
 
-Supposing that the matrices A, b, lb and ub are alerday defined, you can solve
+Supposing that the matrices A, b, lb and ub are already defined, you can solve
  the linear program with
  
  
@@ -45,7 +45,7 @@ Supposing that the matrices A, b, lb and ub are alerday defined, you can solve
  sol,val=stdgrb.lp_solve(c,A,b,lb,ub)
  ```
  
- if A,b,ul,ub and not given or None, the corresponding constraints are not 
+ if A, b, ul, ub and not given or None, the corresponding constraints are not 
  used.
  
  
