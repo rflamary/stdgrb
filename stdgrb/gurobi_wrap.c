@@ -166,6 +166,7 @@ static int solve_problem(
     double *b,  /* RHS vector */
     double *lb, /* variable lower bounds */
     double *ub, /* variable upper bounds */
+    long *type, /* type of variable upper bounds */
     double *sol,
     double *objval,
     int nbeq,
@@ -184,6 +185,22 @@ static int solve_problem(
       sense[i] = '<';
   } //
 
+  // define variable type
+  char *trad_type="CBISN";
+  char *vtype = malloc(sizeof(char) * cols);
+  if (!type)
+  {
+    for (int i = 0; i < cols; i++)
+      vtype[i]='C';
+  }
+  else
+  {
+     for (int i = 0; i < cols; i++)
+      vtype[i]=trad_type[type[i]];   
+  };
+  
+
+
   GRBenv *env = NULL;
   int error = 0;
   int solved = 0;
@@ -197,7 +214,7 @@ static int solve_problem(
   /* Solve the model */
 
   solved = dense_optimize(env, rows, cols, c, Q, A, sense, b, lb,
-                          ub, NULL, sol, objval, method, logtoconsole,
+                          ub, vtype, sol, objval, method, logtoconsole,
                           crossover);
 
   //  if (solved)

@@ -22,6 +22,7 @@ cdef extern from "gurobi_wrap.c":
                double *b,  
                double *lb,   
                double *ub,   
+               long * typevar,
                double *solution,
                double *objvalP,
                int nbeq,
@@ -34,7 +35,8 @@ def lp_solve_0(np.ndarray[double, ndim=1] c,
              np.ndarray[double, ndim=2, mode="c"] A, 
              np.ndarray[double, ndim=1] b, 
              np.ndarray[double, ndim=1] lb,np.ndarray[double, ndim=1] ub, 
-             int nbeq, int method=-1,int logtoconsole=1, int crossover=-1):
+             int nbeq, np.ndarray[long, ndim=1] typevar,
+             int method=-1,int logtoconsole=1, int crossover=-1):
     """ solve stanard linear program
     
     solve the following optimization problem:
@@ -57,7 +59,7 @@ def lp_solve_0(np.ndarray[double, ndim=1] c,
 
     solved=solve_problem(rows, cols,   <double*>  c.data,NULL, <double*>  A.data,
                          <double*>  b.data, <double*>  lb.data,
-                         <double*>  ub.data,<double*>  sol.data, &val0, 
+                         <double*>  ub.data,<long*> typevar.data, <double*>  sol.data, &val0, 
                          nbeq, method, logtoconsole,crossover)
     
     if not solved:
@@ -70,7 +72,8 @@ def lp_solve_0(np.ndarray[double, ndim=1] c,
 def qp_solve_0(np.ndarray[double, ndim=2, mode="c"] Q,np.ndarray[double, ndim=1] c,
              np.ndarray[double, ndim=2, mode="c"] A, 
              np.ndarray[double, ndim=1] b, 
-             np.ndarray[double, ndim=1] lb,np.ndarray[double, ndim=1] ub, int nbeq,
+             np.ndarray[double, ndim=1] lb,np.ndarray[double, ndim=1] ub, 
+             int nbeq, np.ndarray[long, ndim=1] typevar,
              int method=-1,int logtoconsole=1, int crossover=-1):
     """ solve stanard linear program
     
@@ -94,7 +97,7 @@ def qp_solve_0(np.ndarray[double, ndim=2, mode="c"] Q,np.ndarray[double, ndim=1]
 
     solved=solve_problem(rows, cols,   <double*>  c.data,<double*>  Q.data, <double*>  A.data,
                          <double*>  b.data, <double*>  lb.data,
-                         <double*>  ub.data,<double*>  sol.data, &val0,
+                         <double*>  ub.data, <long*> typevar.data, <double*>  sol.data, &val0,
                          nbeq, method, logtoconsole,crossover)
     
     if not solved:
@@ -105,7 +108,7 @@ def qp_solve_0(np.ndarray[double, ndim=2, mode="c"] Q,np.ndarray[double, ndim=1]
     return sol,val
 
 
-def lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, crossover=-1):
+def lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0, typevar=None, method=-1,logtoconsole=1, crossover=-1):
     """ Solves a standard linear program
     
     Solve the following optimization problem:
@@ -176,8 +179,17 @@ def lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, c
         
     if not A.flags.c_contiguous:
         A=A.copy(order='C')
+
+    if typevar is None:
+        typevar=np.zeros(n,dtype=np.int64)
+    elif type(typevar)==int:
+        typevar=typevar*np.ones(n,dtype=np.int64)
+    else:
+        typevar=typevar.astype(np.int64)
+
+
         
-    sol,val=lp_solve_0(c,A,b,lb,ub,nbeq, method,logtoconsole,crossover)
+    sol,val=lp_solve_0(c,A,b,lb,ub,nbeq,typevar, method,logtoconsole,crossover)
     
     
     return sol, val
@@ -185,7 +197,7 @@ def lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, c
 
 
 
-def qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None, nbeq=0, method=-1,logtoconsole=1,crossover=-1):
+def qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None,nbeq=0,typevar=None,  method=-1,logtoconsole=1,crossover=-1):
     """ Solves a standard quadratic program
     
     Solve the following optimization problem:
@@ -263,8 +275,15 @@ def qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None, nbeq=0, method=-1,logtocons
 
     if not Q.flags.c_contiguous:
         Q=Q.copy(order='C')
+
+    if typevar is None:
+        typevar=np.zeros(n,dtype=np.int64)
+    elif type(typevar)==int:
+        typevar=typevar*np.ones(n,dtype=np.int64)
+    else:
+        typevar=typevar.astype(np.int64)    
         
-    sol,val=qp_solve_0(Q,c,A,b,lb,ub,nbeq, method,logtoconsole,crossover)
+    sol,val=qp_solve_0(Q,c,A,b,lb,ub,nbeq, typevar, method,logtoconsole,crossover)
     
 
     return sol,val

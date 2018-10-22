@@ -28,8 +28,8 @@ def toc():
 
 #%%
 
-n=2000
-d=200
+n=100
+d=10
 
 np.random.seed(0)
 
@@ -65,12 +65,12 @@ toc()
 
 print('Simplex method')
 tic()
-x2,v2=stdgrb.lp_solve(c,A,b,lb,ub,1,logtoconsole=0)
+x2,v2=stdgrb.lp_solve(c,A,b,lb,ub,method=1,logtoconsole=0)
 toc()
 
 print('Interior point method')
 tic()
-x3,v3=stdgrb.lp_solve(c,A,b,lb,ub,2,logtoconsole=0,crossover=0)
+x3,v3=stdgrb.lp_solve(c,A,b,lb,ub,method=2,logtoconsole=0,crossover=0)
 toc()
 #%%
 
