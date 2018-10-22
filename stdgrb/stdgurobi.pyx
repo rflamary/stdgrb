@@ -141,6 +141,15 @@ def lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0, typevar=None, method=-1,log
         Upper bound constraint     
     nbeq: int, optional
         Treat the nbeq first lines of A as equality constraints.
+    typevar: int, (d,) ndarray, int, optional
+        integer or array of integer defining the type of variables (default 
+        continuous).
+        Select typevar from:
+        * 0 : Continuous
+        * 1 : Binary
+        * 2 : Integer
+        * 3 : Semi-continuous (0.0 or value in const)
+        * 4 : Semi-integer (0 or value in const)
     method : int, optional
         Selected solver from  
         * -1=automatic (default), 
@@ -231,6 +240,15 @@ def qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None,nbeq=0,typevar=None,  method
         Upper bound constraint    
     nbeq: int, optional
         Treat the nbeq first lines of A as equality constraints.        
+    typevar: int, (d,) ndarray, int, optional
+        integer or array of integer defining the type of variables (default 
+        continuous).
+        Select typevar from:
+        * 0 : Continuous
+        * 1 : Binary
+        * 2 : Integer
+        * 3 : Semi-continuous (0.0 or value in const)
+        * 4 : Semi-integer (0 or value in const)        
     method : int, optional
         Selected solver from  
         * -1=automatic (default), 
