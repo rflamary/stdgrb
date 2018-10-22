@@ -36,7 +36,7 @@ python setup.py install # --user if local install
 
 ## Use the module
 
-### Linear program `lp_solve`
+### Linear program (LP,ILP,MILP) `lp_solve`
 
 ```python
 lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0,typevar=None, method=-1,logtoconsole=1, crossover=-1)
@@ -45,6 +45,8 @@ lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0,typevar=None, method=-1,logtocon
 Solves the following optimization problem:
 
 ![LP](imgs/lp.png)
+
+with optional equality constraints and integer variables in x.
 
 Parameters:
 * c : (d,) ndarray, float64,
@@ -90,7 +92,7 @@ Returns:
     Optimal value of the objective (None if optimization error)
 
 
-### Quadratic program `qp_solve`
+### Quadratic program (QP,IQP,MIQP) `qp_solve`
 
 ```python
 qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None,nbeq=0,typevar=None, method=-1,logtoconsole=1, crossover=-1)
@@ -99,6 +101,9 @@ qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None,nbeq=0,typevar=None, method=-1,l
 Solves the following optimization problem:
 
 ![QP](imgs/qp.png)
+
+with optional equality constraints and integer variables in x.
+
 
 Parameters:
 * Q : (d,d) ndarray, float64, optional
