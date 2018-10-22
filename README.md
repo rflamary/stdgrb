@@ -39,7 +39,7 @@ python setup.py install # --user if local install
 ### Linear program `lp_solve`
 
 ```python
-lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, crossover=-1)
+lp_solve(c,A=None,b=None,lb=None,ub=None,nbeq=0,typevar=None, method=-1,logtoconsole=1, crossover=-1)
 ```
 
 Solves the following optimization problem:
@@ -58,9 +58,25 @@ Parameters:
 * ub : (d) ndarray, float64, optional,
     Upper bound constraint
 * nbeq: int, optional,
-    Treat the nbeq first lines of A as equality constraints.    
+    Treat the nbeq first lines of A as equality constraints.   
+* typevar: int, (d,) ndarray, int, optional
+    Integer or array of integer defining the type of variables (default 
+    continuous).
+    Select typevar from:
+    * 0 : Continuous
+    * 1 : Binary
+    * 2 : Integer
+    * 3 : Semi-continuous (0.0 or value in const)
+    * 4 : Semi-integer (0 or value in const)       
 * method : int, optional,
-    Selected solver from * -1=automatic (default), * 0=primal simplex, * 1=dual simplex, * 2=barrier, * 3=concurrent, * 4=deterministic concurrent, * 5=deterministic concurrent simplex
+    Selected solver from (see gurobi documentation) 
+    * -1=automatic (default), 
+    * 0=primal simplex, 
+    * 1=dual simplex, 
+    * 2=barrier, 
+    * 3=concurrent, 
+    * 4=deterministic concurrent, 
+    * 5=deterministic concurrent simplex
 * logtoconsole : int, optional,
     If 1 the print log in console,
 * crossover : int, optional,
@@ -77,7 +93,7 @@ Returns:
 ### Quadratic program `qp_solve`
 
 ```python
-qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None,nbeq=0, method=-1,logtoconsole=1, crossover=-1)
+qp_solve(Q,c=None,A=None,b=None,lb=None,ub=None,nbeq=0,typevar=None, method=-1,logtoconsole=1, crossover=-1)
 ```
 
 Solves the following optimization problem:
@@ -99,8 +115,24 @@ Parameters:
     Upper bound constraint
 * nbeq: int, optional,
     Treat the nbeq first lines of A as equality constraints.    
+* typevar: int, (d,) ndarray, int, optional
+    Integer or array of integer defining the type of variables (default 
+    continuous).
+    Select typevar from:
+    * 0 : Continuous
+    * 1 : Binary
+    * 2 : Integer
+    * 3 : Semi-continuous (0.0 or value in const)
+    * 4 : Semi-integer (0 or value in const)     
 * method : int, optional,
-    Selected solver from * -1=automatic (default), * 0=primal simplex, * 1=dual simplex, * 2=barrier, * 3=concurrent, * 4=deterministic concurrent, * 5=deterministic concurrent simplex
+    Selected solver from (see gurobi documentation) 
+    * -1=automatic (default), 
+    * 0=primal simplex, 
+    * 1=dual simplex, 
+    * 2=barrier, 
+    * 3=concurrent, 
+    * 4=deterministic concurrent, 
+    * 5=deterministic concurrent simplex
 * logtoconsole : int, optional,
     If 1 the print log in console,
 * crossover : int, optional,
