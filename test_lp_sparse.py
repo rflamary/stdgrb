@@ -28,8 +28,8 @@ def toc():
 
 #%%
 
-n=1000
-d=10000
+n=5000
+d=1000
 
 np.random.seed(0)
 

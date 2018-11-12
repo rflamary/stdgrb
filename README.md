@@ -34,6 +34,14 @@ When the environement variables are set, you can install the module with
 python setup.py install # --user if local install
 ```
 
+In you want to compile stdgrb inplace execute the following command
+
+```bash
+python setup.py build_ext --inplace
+```
+
+This will allow execution of example scripts directly in the stdgrb folder.
+
 ## Use the module
 
 ### Linear program (LP,ILP,MILP) `lp_solve`
