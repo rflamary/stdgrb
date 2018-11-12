@@ -12,6 +12,7 @@
   optimal solution vector in 'solution'.
 */
 
+
 static int
 dense_optimize(GRBenv *env,
                int rows,
@@ -235,4 +236,132 @@ QUIT:
   GRBfreeenv(env);
 
   return solved;
+}
+
+static int solve_sparse_lp(
+    int rows,    /* nb rows in A */
+    int cols,    /* nb cols in A, also size of the problame */
+    size_t nnz,
+    double *val,        /* linear portion of objective function */
+    size_t *beg,
+    int *ind,
+    double *c,
+    double *b,  /* RHS vector */
+    double *lb, /* variable lower bounds */
+    double *ub, /* variable upper bounds */
+    long *type, /* type of variable upper bounds */
+    double *sol,
+    double *objval,
+    int nbeq,
+    int method,
+    int logtoconsole,
+    int crossover)
+{
+
+ // define constraint type
+  char *sense = malloc(sizeof(char) * rows);
+  for (int i = 0; i < rows; i++)
+  {
+    if (i < nbeq)
+      sense[i] = '=';
+    else
+      sense[i] = '<';
+  } //
+
+  // define variable type
+  char *trad_type="CBISN";
+  char *vtype = malloc(sizeof(char) * cols);
+  if (!type)
+  {
+    for (int i = 0; i < cols; i++)
+      vtype[i]='C';
+  }
+  else
+  {
+     for (int i = 0; i < cols; i++)
+      vtype[i]=trad_type[type[i]];   
+  };
+  
+  
+
+  GRBenv *env = NULL;
+  int error = 0;
+ 
+  
+  
+  /* Create environment */
+
+  error = GRBloadenv(&env, "dense.log");
+  if (error)
+    goto QUIT;
+
+  /* Solve the model */
+
+  GRBmodel *model = NULL;
+  int optimstatus;
+  int success = 0;
+
+  /* Create an empty model */
+  error = GRBnewmodel(env, &model, "dense", cols, c, lb, ub, vtype, NULL);
+  if (error)
+    goto QUIT;
+    
+    // add all contrstraints
+   error = GRBXaddconstrs (model,rows,nnz,beg,ind,val,sense,b,NULL);
+
+
+ /* set parameters */
+
+  error = GRBsetintparam(GRBgetenv(model), "Method", method);
+  if (error)
+    goto QUIT;
+  error = GRBsetintparam(GRBgetenv(model), "LogToConsole", logtoconsole);
+  if (error)
+    goto QUIT;
+  error = GRBsetintparam(GRBgetenv(model), "Crossover", crossover);
+  if (error)
+    goto QUIT;
+    
+
+    
+  /* Optimize model */
+
+  error = GRBoptimize(model);
+  if (error)
+    goto QUIT;
+    
+    
+    
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &optimstatus);
+  if (error)
+    goto QUIT;
+    
+   QUIT:
+
+  if (error)
+  {
+    printf("ERROR: %s\n", GRBgeterrormsg(env));
+    exit(1);
+  }
+  
+    if (optimstatus == GRB_OPTIMAL)
+  {
+
+    error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, objval);
+    if (error)
+      goto QUIT;
+
+    error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, cols, sol);
+    if (error)
+      goto QUIT;
+
+    success = 1;
+  }
+  
+  free(sense);
+  
+  GRBfreeenv(env);
+
+  return success;
+
 }
