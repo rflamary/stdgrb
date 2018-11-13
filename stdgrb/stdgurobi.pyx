@@ -341,7 +341,6 @@ def lp_solve_sparse(c,A,b,lb=None,ub=None,nbeq=0, typevar=None, method=-1,logtoc
     n=c.shape[0]
     
     A=sp.sparse.csr_matrix(A)
-    
         
     if lb is None:
         lb=-np.ones(n)*np.inf
@@ -357,7 +356,7 @@ def lp_solve_sparse(c,A,b,lb=None,ub=None,nbeq=0, typevar=None, method=-1,logtoc
         typevar=typevar.astype(np.int64)
         
     
-    sol,val=lp_solve_sparse_0(c,A.shape[0],A.data,A.indptr.astype(np.int64),A.indices,b,lb,ub,nbeq,typevar, method,logtoconsole,crossover)
+    sol,val=lp_solve_sparse_0(c,A.shape[0],A.data,A.indptr.astype(np.int64),A.indices.astype(np.int32),b,lb,ub,nbeq,typevar, method,logtoconsole,crossover)
     
     
     return sol, val
